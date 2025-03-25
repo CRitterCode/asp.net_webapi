@@ -1,0 +1,9 @@
+@startuml
+
+class user{}
+class buisness{}
+
+
+user |o-- buisness
+
+@enduml
