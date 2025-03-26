@@ -11,11 +11,13 @@ namespace Infrastructure.Interfaces
     {
 
         IQueryable<T> GetAll();
-        Task<T> GetById(int id);
-        Task<int> Add(T entity);
-        Task<int> Delete(T entity);
-        Task<int> DeleteMany(ICollection<T> entity);
+        Task<T> GetByIdAsync(uint id);
+        Task<int> AddAsync(T entity);
+        Task<int> DeleteAsync(T entity);
+        Task<int> DeleteManyAsync(ICollection<T> entity);
 
-        Task<int> Update(T entity);
+        Task<int> UpdateAsync(T entity);
+        Task<int> UpdateManyAsync(ICollection<T> entities);
+        Task<int> AddManyAsync(ICollection<T> entities);
     }
 }

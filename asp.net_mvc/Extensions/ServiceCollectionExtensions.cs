@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Application.Extensions
+namespace asp.net_mvc.Extensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -22,13 +22,22 @@ namespace Application.Extensions
         }
 
         public static IServiceCollection InitializeIdentityDatabase(
-    this IServiceCollection services, IConfiguration configuration)
+            this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("IdentityDatabaseConnection")
                 ?? throw new DatabaseException("Can't initialize identity database");
 
             services.AddDbContext<ApplicationIdentityDbContext>(options =>
                 options.UseSqlite(connectionString));
+
+            return services;
+        }
+
+        public static IServiceCollection AddAutoMapper(
+            this IServiceCollection services)
+        {
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(typeof(AutoMapperProfile));
 
             return services;
         }

@@ -19,7 +19,7 @@ namespace Infrastructure.Context
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Buisness> Buisness { get; set; }
+        public DbSet<Business> Business { get; set; }
         public DbSet<TimeTable> TimeTables { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }

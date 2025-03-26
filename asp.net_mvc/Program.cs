@@ -1,7 +1,9 @@
-using Application.Extensions;
+using Application.Interfaces;
 using Application.Services;
+using asp.net_mvc.Extensions;
 using Domain.Entities;
-using Infrastructure;
+using Domain.Entities.Reservation;
+
 using Infrastructure.Context;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
@@ -11,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.InitializeDatabase(builder.Configuration);
 builder.Services.InitializeIdentityDatabase(builder.Configuration);
+builder.Services.AddAutoMapper();
 
 # region Identity
 
@@ -21,8 +24,14 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>()
 
 #region Services
 
-builder.Services.AddTransient<IRepositoryBase<User>, UserRepository>();
-builder.Services.AddTransient<UserService>();
+//TODO: register specific Repos
+builder.Services.AddTransient<IRepositoryBase<User>, UserRepository>(); 
+builder.Services.AddTransient<IRepositoryBase<Business>, BusinessRepository>(); 
+builder.Services.AddTransient<IRepositoryBase<TimeTable>, TimeTableRepository>(); 
+
+
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IBusinessService, BusinessService>();
 
 builder.Services.AddControllers();
 

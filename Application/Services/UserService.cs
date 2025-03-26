@@ -1,20 +1,14 @@
-﻿using Domain.Entities;
+﻿using Application.Interfaces;
+using Domain.Entities;
 using Infrastructure.Interfaces;
 
 namespace Application.Services
 {
-    public class UserService
+    public class UserService(IRepositoryBase<User> repo) : ServiceBase<User>(repo), IUserService
     {
-        private IRepositoryBase<User> _userRepository { get; set; }
-
-        public UserService(IRepositoryBase<User> userRepository)
-        {
-            _userRepository = userRepository;
-        }
-
         public IQueryable<User> GetAllUsers()
         {
-            return _userRepository.GetAll();
+            throw new NotImplementedException();
         }
     }
 }
