@@ -27,7 +27,7 @@ namespace Domain.Entities.Reservation
         public bool IsClosingTimeValid => IsTimeSpanWithinDaycycle(ClosingTime) && OpeningTime < ClosingTime;
 
         public bool IsValidDayTimeCycle => IsOpeningTimeValid && IsClosingTimeValid;
-        public bool IsValidWeekday => !DayOfWeek.HasFlag(Weekdays.NotDefined);
+        public bool IsValidWeekday => Enum.IsDefined(DayOfWeek);
 
         private bool IsTimeSpanWithinDaycycle(TimeSpan time) => time >= TimeSpan.Zero && time <= TimeSpan.FromHours(24);
     }

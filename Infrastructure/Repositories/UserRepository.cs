@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepository(ReservationDbContext context) : RepositoryBase<User>(context)
+    public class UserRepository(ReservationDbContext context) : RepositoryGuidBase<User>(context)
     {
     
     }

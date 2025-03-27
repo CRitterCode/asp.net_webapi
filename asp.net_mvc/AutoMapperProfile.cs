@@ -9,9 +9,7 @@ namespace asp.net_mvc
     {
         public AutoMapperProfile()
         {
- 
-            CreateMap<TimeTableDTO, TimeTable>();
-                                                 
+            CreateMap<TimeTableDTO, TimeTable>().ForPath(dst => dst.Business.Guid, opt => opt.MapFrom(src => src.BusinessGuid));
         }
     }
 }

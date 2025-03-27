@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Domain.Entities
 {
     [Table(nameof(Business))]
-    public class Business : EntityBase
+    public class Business : EntityGuidBase
     {
         public uint UserId { get; set; }
         public string TimeZone { get; set; } = string.Empty;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Interfaces
 {
-    public interface IRepositoryBase<T> where T : class, IEntityBase
+    public interface IRepositoryBase<T> where T : class
     {
         IQueryable<T> GetAll();
         Task<int> AddAsync(T entity);

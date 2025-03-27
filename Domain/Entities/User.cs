@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Domain.Entities
 {
     [Table(nameof(User))]
-    public class User : EntityBase
+    public class User : EntityGuidBase
     {
         public ICollection<Business> Businesses { get; set; }
     }

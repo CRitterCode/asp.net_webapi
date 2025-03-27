@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class BusinessRepository(ReservationDbContext context) : RepositoryBase<Business>(context)
+    public class BusinessRepository(ReservationDbContext context) : RepositoryGuidBase<Business>(context)
     {
     }
 }

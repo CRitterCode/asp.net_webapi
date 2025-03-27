@@ -17,31 +17,47 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class BusinessService(IRepositoryBase<Business> repository, IRepositoryBase<TimeTable> _timeTableRepository) : ServiceBase<Business>(repository), IBusinessService
+    public class BusinessService(IRepositoryGuidBase<Business> _businessRepository, IRepositoryBase<TimeTable> _timeTableRepository) : ServiceBase<Business>(_businessRepository), IBusinessService
     {
         public async Task AddTimeTableAsync(ICollection<TimeTable> timeTables)
         {
-                var businessId = timeTables.First().BusinessId;
-                var business = await _currentRepo.GetByIdAsync(businessId) ?? throw new ServiceException("Error with referenced Business.");
+            //var businessGuid = timeTables.First().Business.Guid;
+            //var business = await _businessRepository.GetByGuidAsync(businessGuid) ?? throw new ServiceException("Error with referenced Business.");
 
-                if (!timeTables.All(tt => tt.BusinessId == business.Id))
+            //if (!timeTables.All(tt => tt.BusinessId == business.Id))
+            //{
+            //    throw new ServiceException("Guid missmatch");
+            //}
+
+            var timeTablesgroupedAndSorted = timeTables
+                                    .GroupBy(g => g.DayOfWeek)
+                                    .OrderBy(g => g.Key)
+                                    .Select(group => new
+                                    {
+                                        DayOfWeek = group.Key,
+                                        TimeTable = group.OrderBy(t => t.OpeningTime)
+                                    });
+
+            foreach (var tt in timeTablesgroupedAndSorted)
+            {
+                if (!tt.TimeTable.All(t => t.IsValidWeekday))
                 {
-                    throw new ServiceException("Id missmatch");
+                    throw new ServiceException("Wrong Weekday provided.");
                 }
 
-                foreach (var timeTable in timeTables)
+                if (!tt.TimeTable.All(t => t.IsValidDayTimeCycle))
                 {
-                    if (!timeTable.IsValidWeekday)
-                    {
-                        throw new ServiceException("Wrong Weekday provided.");
-                    }
-                    if (!timeTable.IsValidDayTimeCycle)
-                    {
-                        throw new ServiceException("Opening time comes before closing time.");
-                    }
+                    throw new ServiceException($"Wrong daycycle provided for {tt.DayOfWeek}");
                 }
-                await _timeTableRepository.AddManyAsync(timeTables);
-            
+                var x = tt.TimeTable.Zip(tt.TimeTable.Skip(1), (current, next) => new { Current = current, Next = next });
+                if (tt.TimeTable.Zip(tt.TimeTable.Skip(1), (current, next) => new { Current = current, Next = next })
+                                    .Any(pair => pair.Current.ClosingTime > pair.Next.OpeningTime))
+                {
+                    throw new ServiceException($"Overlapping closing and opening times for {tt.DayOfWeek}");
+                }
+            }
+            await _timeTableRepository.AddManyAsync(timeTables);
+
         }
 
 

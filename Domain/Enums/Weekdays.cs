@@ -8,7 +8,6 @@ namespace Domain.Enums
 {
     public enum Weekdays
     {
-        NotDefined = -1,
         Monday = 1,
         Tuesday,
         Wednesday,

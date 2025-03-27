@@ -25,12 +25,12 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>()
 #region Services
 
 //TODO: register specific Repos
-builder.Services.AddTransient<IRepositoryBase<User>, UserRepository>(); 
-builder.Services.AddTransient<IRepositoryBase<Business>, BusinessRepository>(); 
+builder.Services.AddTransient<IRepositoryGuidBase<User>, UserRepository>(); 
+builder.Services.AddTransient<IRepositoryGuidBase<Business>, BusinessRepository>(); 
 builder.Services.AddTransient<IRepositoryBase<TimeTable>, TimeTableRepository>(); 
 
 
-builder.Services.AddTransient<IUserService, UserService>();
+//builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IBusinessService, BusinessService>();
 
 builder.Services.AddControllers();
