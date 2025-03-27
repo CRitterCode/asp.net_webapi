@@ -3,11 +3,15 @@ using Application.Interfaces;
 using Domain.Entities;
 using Domain.Entities.Reservation;
 using Domain.Enums;
+using Infrastructure.Exceptions;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,28 +21,27 @@ namespace Application.Services
     {
         public async Task AddTimeTableAsync(ICollection<TimeTable> timeTables)
         {
-            //var businessId = timeTables.First().BusinessId;
-            //var business = await _currentRepo.GetByIdAsync(businessId) ?? throw new BusinessServiceException("Error with referenced Business.");
+                var businessId = timeTables.First().BusinessId;
+                var business = await _currentRepo.GetByIdAsync(businessId) ?? throw new ServiceException("Error with referenced Business.");
 
-            //if (!timeTables.All(tt => tt.BusinessId == business.Id))
-            //{
-            //    throw new BusinessServiceException("Error with referenced Business.");
-            //}
-
-
-            foreach (var timeTable in timeTables)
-            {
-                if (!timeTable.IsValidWeekday)
+                if (!timeTables.All(tt => tt.BusinessId == business.Id))
                 {
-                    throw new BusinessServiceException("Wrong Weekday provided.");
+                    throw new ServiceException("Id missmatch");
                 }
-                if (!timeTable.IsValidDayTimeCycle)
-                {
-                    throw new BusinessServiceException("Opening time comes before closing time.");
-                }
-            }
-            await _timeTableRepository.AddManyAsync(timeTables);
 
+                foreach (var timeTable in timeTables)
+                {
+                    if (!timeTable.IsValidWeekday)
+                    {
+                        throw new ServiceException("Wrong Weekday provided.");
+                    }
+                    if (!timeTable.IsValidDayTimeCycle)
+                    {
+                        throw new ServiceException("Opening time comes before closing time.");
+                    }
+                }
+                await _timeTableRepository.AddManyAsync(timeTables);
+            
         }
 
 

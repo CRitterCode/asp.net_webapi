@@ -1,4 +1,4 @@
-﻿using Infrastructure;
+﻿using Infrastructure.Exceptions;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

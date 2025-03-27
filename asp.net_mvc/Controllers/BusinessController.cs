@@ -24,9 +24,12 @@ namespace asp.net_mvc.Controllers
                 await BusinessService.AddTimeTableAsync(mappedTimeTables);
                 return Ok();
             }
-            catch (BusinessServiceException ex)
+            catch (ServiceException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception) {
+                return BadRequest("Service not avaiable.");
             }
         }
 
